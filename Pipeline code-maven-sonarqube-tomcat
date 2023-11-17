@@ -1,0 +1,25 @@
+node{
+stage('clone repo'){
+git credentials ID:
+}
+}
+stage('maven build'){
+dif maven Home = tool name :"maven-3.8.6", type:"maven"
+dif maven CMD ="${mavenHome}/bin/mvn"
+sh"${maven CMD} clean package"
+}
+stage('Code Review'){
+with Sonarqube Env('sonar-sonar-7.8'){
+dif maven Home = tool name :"maven-3.8.6", type:"maven"
+dif maven CMD ="${mavenHome}/bin/mvn"
+sh"${maven CMD} sonar:sonar"
+}
+}
+Stage ('Deploy'){
+sshagent(['tomcat-server-Agent']){
+sh 'scp -0 strick Host key checking=no
+target/01-maven-web-app.war
+ec2-user@ public IP:/home/ec2-user/apache-tomcat-9.0.65/webapp
+ps'
+}
+}
